@@ -3,6 +3,10 @@ main = "src/worker.ts"
 compatibility_date = "2025-04-29"
 compatibility_flags = ["nodejs_compat"]
 
+routes = [
+  { pattern = "quieto.dev/sse", custom_domain = true }
+]
+
 [durable_objects]
 bindings = [
   { name = "MCP_OBJECT", class_name = "QuietoMCP" }
