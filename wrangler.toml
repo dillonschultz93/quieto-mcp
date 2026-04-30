@@ -4,7 +4,7 @@ compatibility_date = "2025-04-29"
 compatibility_flags = ["nodejs_compat"]
 
 routes = [
-  { pattern = "quieto.dev/sse", custom_domain = true }
+  { pattern = "quieto.dev", custom_domain = true }
 ]
 
 [durable_objects]
