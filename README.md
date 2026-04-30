@@ -21,22 +21,17 @@ npm install -g @quieto/mcp
 
 ## Usage
 
-### Claude Code
+### Remote (hosted on Cloudflare Workers)
 
-Add to your Claude Code MCP settings:
+The server is live at `https://quieto.dev/sse` — no install required.
 
-```json
-{
-  "mcpServers": {
-    "quieto": {
-      "command": "npx",
-      "args": ["-y", "@quieto/mcp"]
-    }
-  }
-}
+#### Claude Code
+
+```bash
+claude mcp add quieto --transport sse https://quieto.dev/sse
 ```
 
-### Claude Desktop
+#### Claude Desktop
 
 Add to your `claude_desktop_config.json`:
 
@@ -44,20 +39,52 @@ Add to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "quieto": {
+      "url": "https://quieto.dev/sse"
+    }
+  }
+}
+```
+
+#### Cursor
+
+Add to your MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "quieto": {
+      "url": "https://quieto.dev/sse"
+    }
+  }
+}
+```
+
+### Local (stdio)
+
+Install globally and run as a local MCP server:
+
+```bash
+npm install -g @quieto/mcp
+```
+
+#### Claude Code
+
+```bash
+claude mcp add quieto -- npx -y @quieto/mcp
+```
+
+#### Claude Desktop / Cursor
+
+```json
+{
+  "mcpServers": {
+    "quieto": {
       "command": "npx",
       "args": ["-y", "@quieto/mcp"]
     }
   }
 }
 ```
-
-### Programmatic
-
-```bash
-quieto-mcp
-```
-
-The server communicates over stdio using the MCP protocol.
 
 ## Examples
 
