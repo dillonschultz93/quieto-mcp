@@ -1,0 +1,52 @@
+{
+  "name": "@quieto/mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Quieto Tokens design token generation, contrast checking, and token system analysis.",
+  "type": "module",
+  "bin": {
+    "quieto-mcp": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dillonschultz93/quieto-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "design-tokens",
+    "dtcg",
+    "claude",
+    "model-context-protocol"
+  ],
+  "author": "Dillon Schultz",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@quieto/tokens": "^0.3.0",
+    "zod": "^3.25.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.4"
+  }
+}
