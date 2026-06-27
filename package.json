@@ -43,7 +43,8 @@
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "@quieto/tokens": "^0.3.0",
+    "@quieto/engine": "^0.1.1",
+    "@quieto/tokens": "^0.4.0",
     "agents": "^0.9.0",
     "zod": "^4.0.0"
   },

@@ -11,6 +11,7 @@ import {
   type ColorRamp,
   type PrimitiveToken,
 } from "@quieto/tokens";
+import { inferSeedFromStylesheets } from "./infer.js";
 
 function colorRampToTokens(ramp: ColorRamp): PrimitiveToken[] {
   return ramp.steps.map((step) => ({
@@ -130,6 +131,67 @@ export function registerTools(server: McpServer) {
       const semantics = generateSemanticTokens(primitives);
       const themes = generateThemes(semantics, primitives, darkMode);
       return { content: [{ type: "text", text: JSON.stringify(themes, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    "bootstrap_from_codebase",
+    "Bootstrap a token system from an existing codebase's hardcoded styles instead of answering the quick-start prompts from scratch. Pass the contents of the project's stylesheets (.css/.scss/.sass/.less/.styl); Quieto tallies the colors, spacing, font families, and weights it finds and infers the seed inputs (brand color, additional hues by role, spacing base, type scale, fonts/weights, and light/dark themes). This is a seed-and-generate flow: by default it also runs the normal accessible-ramp pipeline to produce a full themed token system. Returns an inference summary (with warnings when it had to guess) so you can review and override before writing anything.",
+    {
+      stylesheets: z
+        .array(
+          z.object({
+            path: z.string().describe("Path or filename of the stylesheet (for reporting only)."),
+            content: z.string().describe("Raw stylesheet source."),
+          }),
+        )
+        .min(1)
+        .describe(
+          "The project's stylesheets. Read each file and pass its content; node_modules/dist/build are normally excluded. Assumes roughly one declaration per line (formatted CSS).",
+        ),
+      generate: z
+        .boolean()
+        .optional()
+        .default(true)
+        .describe(
+          "Also generate the full themed token system from the inferred seed. Set false to only return the inferred inputs and summary. Defaults to true.",
+        ),
+    },
+    async ({ stylesheets, generate }) => {
+      const inferred = inferSeedFromStylesheets(stylesheets);
+      if (!inferred) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                {
+                  inferred: null,
+                  message:
+                    "No color, spacing, or typography signal found in the provided stylesheets. Pass formatted CSS/SCSS/etc. with one declaration per line, or fall back to the quick-start tools (map_semantics / generate_themes).",
+                },
+                null,
+                2,
+              ),
+            },
+          ],
+        };
+      }
+
+      const { brandColor, spacingBase, typeScale, generateThemes: darkMode } = inferred.options;
+      const result: Record<string, unknown> = { inferred };
+
+      if (generate) {
+        const primitives = [
+          ...buildColorPrimitives(brandColor),
+          ...generateSpacingPrimitives(spacingBase),
+          ...generateTypographyPrimitives(typeScale),
+        ];
+        const semantics = generateSemanticTokens(primitives);
+        result.themes = generateThemes(semantics, primitives, darkMode);
+      }
+
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     },
   );
 }

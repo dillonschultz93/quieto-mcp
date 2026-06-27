@@ -12,6 +12,7 @@ An [MCP](https://modelcontextprotocol.io/) server that exposes [Quieto Tokens](h
 | `check_contrast` | Check WCAG 2.1 contrast ratio between two hex colors |
 | `map_semantics` | Generate semantic tokens (tier 2) from primitive inputs |
 | `generate_themes` | Generate light and dark theme token collections |
+| `bootstrap_from_codebase` | Infer a seed from an existing codebase's hardcoded styles, then generate a token system |
 
 ## Installation
 
@@ -125,6 +126,24 @@ claude mcp add quieto -- npx -y @quieto/mcp
   }
 }
 ```
+
+### Bootstrap from an existing codebase
+
+Already have a project with hardcoded styles but no token system? Instead of answering the quick-start prompts from scratch, point Quieto at your code and let it infer the seed. Read your stylesheets (`.css`, `.scss`, `.sass`, `.less`, `.styl`) and pass their content — Quieto tallies the colors, spacing, font families, and weights it finds and infers the brand color, additional hues (named by role), spacing base, type scale, fonts/weights, and whether to generate light + dark themes.
+
+```json
+{
+  "tool": "bootstrap_from_codebase",
+  "arguments": {
+    "stylesheets": [
+      { "path": "src/app.css", "content": ".btn { background: #4F46E5; color: #fff; padding: 8px; }" }
+    ],
+    "generate": true
+  }
+}
+```
+
+This is a **seed-and-generate** flow: the inferred values drive the normal accessible-ramp pipeline, so you get a clean, idealized system rather than a literal copy of every hardcoded value. The response includes an **inference summary** (`inferred`) — with warnings when Quieto had to guess — plus the generated `themes` when `generate` is `true` (the default). Review and override the inferred inputs before committing to them; set `generate` to `false` to only return the inferred seed.
 
 ## License
 
