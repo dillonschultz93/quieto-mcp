@@ -24,12 +24,12 @@ npm install -g @quieto/mcp
 
 ### Remote (hosted on Cloudflare Workers)
 
-The server is live at `https://quieto.dev/sse` — no install required.
+The server is live at `https://quieto.dev/mcp` (Streamable HTTP) — no install required. A legacy SSE transport is also available at `https://quieto.dev/sse`.
 
 #### Claude Code
 
 ```bash
-claude mcp add quieto --transport sse https://quieto.dev/sse
+claude mcp add quieto --transport http https://quieto.dev/mcp
 ```
 
 #### Claude Desktop
@@ -40,7 +40,8 @@ Add to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "quieto": {
-      "url": "https://quieto.dev/sse"
+      "type": "http",
+      "url": "https://quieto.dev/mcp"
     }
   }
 }
@@ -54,7 +55,8 @@ Add to your MCP settings:
 {
   "mcpServers": {
     "quieto": {
-      "url": "https://quieto.dev/sse"
+      "type": "http",
+      "url": "https://quieto.dev/mcp"
     }
   }
 }
