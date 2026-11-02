@@ -1,10 +1,12 @@
 # ROUTING LIVES IN THE CLOUDFLARE DASHBOARD, NOT HERE.
 #
-# quieto.dev is shared with the documentation site (the quieto-design-system Worker, in
-# the qds repository), which takes the bare domain as a Custom Domain. This
-# Worker answers only quieto.dev/mcp* and quieto.dev/sse*, through Routes set in
-# the dashboard; a Route takes precedence over a Custom Domain on the same
-# hostname, so MCP traffic reaches this Worker and everything else the docs.
+# quieto.dev is shared with the documentation site (the quieto-design-system
+# Worker, in the qds repository) by Routes on its existing DNS record. The most
+# specific route wins:
+#
+#   quieto.dev/mcp*   -> this Worker
+#   quieto.dev/sse*   -> this Worker
+#   quieto.dev/*      -> quieto-design-system (the docs)
 #
 # Do not add a `routes` (or `route`) key here. A deploy replaces a Worker's
 # routes and domains with whatever this file lists, so a partial list would
