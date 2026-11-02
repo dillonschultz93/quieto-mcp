@@ -1,3 +1,16 @@
+# ROUTING LIVES IN THE CLOUDFLARE DASHBOARD, NOT HERE.
+#
+# quieto.dev is shared with the documentation site (the quieto-docs Worker, in
+# the qds repository), which takes the bare domain as a Custom Domain. This
+# Worker answers only quieto.dev/mcp* and quieto.dev/sse*, through Routes set in
+# the dashboard; a Route takes precedence over a Custom Domain on the same
+# hostname, so MCP traffic reaches this Worker and everything else the docs.
+#
+# Do not add a `routes` (or `route`) key here. A deploy replaces a Worker's
+# routes and domains with whatever this file lists, so a partial list would
+# detach the dashboard's routes on the next deploy and take the MCP endpoints
+# offline. With no key, deploys leave the dashboard's routing alone.
+
 name = "quieto-mcp"
 main = "src/worker.ts"
 compatibility_date = "2025-04-29"
