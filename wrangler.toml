@@ -1,6 +1,6 @@
 # ROUTING LIVES IN THE CLOUDFLARE DASHBOARD, NOT HERE.
 #
-# quieto.dev is shared with the documentation site (the quieto-docs Worker, in
+# quieto.dev is shared with the documentation site (the quieto-design-system Worker, in
 # the qds repository), which takes the bare domain as a Custom Domain. This
 # Worker answers only quieto.dev/mcp* and quieto.dev/sse*, through Routes set in
 # the dashboard; a Route takes precedence over a Custom Domain on the same
